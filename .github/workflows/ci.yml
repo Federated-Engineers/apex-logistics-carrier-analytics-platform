@@ -1,0 +1,25 @@
+name: CI pipeline
+
+on:
+  pull_request:
+    paths:
+      - "spark_jobs/**"
+      - "requirements*.txt"
+
+jobs:
+  lint:
+    name: Lint Spark jobs
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run isort
+        run: isort --check-only .
+
+      - name: Run flake8
+        run: flake8 .
